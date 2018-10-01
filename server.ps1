@@ -34,11 +34,11 @@ while ($http.IsListening) {
 
     # Get Request Url
     # When a request is made in a web browser the GetContext() method will return a request object
-    # Our route examples below will use the request object properties to decide how to respond
+    # Our route below will use the request object properties to decide how to respond
     $context = $http.GetContext()
     
     # ROUTE
-    # http://127.0.0.1/
+    # Load web pages from PSDrive
     if ($context.Request.HttpMethod -eq 'GET') {
 
         # We can log the request to the terminal
@@ -52,7 +52,8 @@ while ($http.IsListening) {
     
     }
 
-    # ROUTE - Ping 
+    # ROUTE
+    # Ping POST handling
     if ($context.Request.HttpMethod -eq 'POST' -and $context.Request.RawUrl -eq '/ping') {
 
         # decode the form post
@@ -66,7 +67,7 @@ while ($http.IsListening) {
         # Run network test and return results
         $result = Test-NetConnection -ComputerName $FormContent.hostname -Port $FormContent.port -InformationLevel Detailed -Verbose
         
-        # the html/data
+        # Convert response to JSON
         [string]$resp = $Result | ConvertTo-Json
 
         #resposed to the request
