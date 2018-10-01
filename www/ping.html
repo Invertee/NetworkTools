@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Powershell Web UI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/ping.js"></script>
+</head>
+<body>
+    <div class="bodycontainer">
+        <div id="header">
+            <img src="/images/favicon.ico" id="headerlogo">
+            <a href="/index.html" id="headertitle"><strong>Network Tools</strong></a>
+            <div id="headerbuttons">
+                <a href="./ping.html" class="btn btn-warning" role="button">Ping</a>
+                <a href="./ipsc.html" class="btn btn-warning" role="button">IP Scanner</a>
+                <a href="./ptsc.html" class="btn btn-warning" role="button">Port Scanner</a>
+            </div>
+        </div>
+
+        <div class="infocontainer">
+            <div class="innertext">
+                    <form name="pingform">
+                        <div class="form-group">
+                              <label for="hostname">IP Address / Hostname:</label>
+                              <input type="hostname" class="form-control" id="hostnameinput" placeholder="google.com">
+                            </div>
+                            <div id="radiobuttons">
+                            <label for="common">TCP Ports:</label>
+                            <br>
+                                <div class="form-check form-check-inline col-md-1">
+                                    <input class="form-check-input default" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
+                                    <label class="form-check-label" for="inlineRadio1">None</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-1">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                    <label class="form-check-label" for="inlineRadio2">SMB</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-1">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                    <label class="form-check-label" for="inlineRadio3">RDP</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-1">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                                    <label class="form-check-label" for="inlineRadio4">HTTP</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-1">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+                                        <label class="form-check-label" for="inlineRadio5">Custom</label>
+                                    </div>
+                                <div class="form-group form-check-inline col-md-2">
+                                    <input type="text" class="form-control" id="PortNo" value="None">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                              <label for="resultsarea"></label>
+                              <textarea class="form-control" id="resultsarea" rows="5"></textarea>
+                            </div>
+
+                            <button type="button" class="btn btn-outline-warning">Warning</button>
+
+                            
+                          </form>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+.bodycontainer {
+    margin: 0 auto;
+    max-width: 850px;
+}
+
+#header {
+    background: grey;
+    height: 62px;
+    padding: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#headertitle {
+    color: rgb(255, 193, 7);
+    float:left;
+    size: 16px;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+#headerlogo {
+    margin: 5px;
+    height: 40px;
+    width: 40px;
+    float: left;
+}
+
+#headerbuttons {
+    float:right;
+    margin: 5px;
+}
+
+.infocontainer {
+    background: grey;
+    color: white;
+    margin-top: 35px;
+    border-radius: 5px; 
+}
+
+.innertext {
+    margin: 10px;
+    width: 100%;
+    display: block;
+}
+
+.form-group {
+    width: 100%;
+}
+
+#resultsarea {
+    resize: none;
+}
