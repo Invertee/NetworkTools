@@ -8,16 +8,16 @@ New-PSDrive -Name WebStore -PSProvider FileSystem -Root "$PSScriptRoot\www" | ou
 $http = [System.Net.HttpListener]::new() 
 
 # Hostname and port to listen on
-$http.Prefixes.Add("http://localhost:8080/")
+$http.Prefixes.Add("http://localhost:48080/")
 
 # Start the Http Server 
     Try {
         $http.Start()
     } Catch {
         # Attempt to stop any running webserver before starting new HTTP session
-        Invoke-WebRequest "http://localhost:8080/stop" -ErrorAction Stop
+        Invoke-WebRequest "http://localhost:48080/stop" -ErrorAction Stop
         $http = [System.Net.HttpListener]::new()
-        $http.Prefixes.Add("http://localhost:8080/")
+        $http.Prefixes.Add("http://localhost:48080/")
         $http.Start()
     }
 
@@ -27,7 +27,7 @@ if ($http.IsListening) {
 }
 
 # Open index page
-Invoke-URLInDefaultBrowser -URL "http://localhost:8080/index.html"
+Invoke-URLInDefaultBrowser -URL "http://localhost:48080/index.html"
 
 # Used to listen for requests
 while ($http.IsListening) {
