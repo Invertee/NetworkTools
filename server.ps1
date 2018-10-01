@@ -67,7 +67,7 @@ while ($http.IsListening) {
         # Run network test and return results
         $result = Test-NetConnection -ComputerName $FormContent.hostname -Port $FormContent.port -InformationLevel Detailed -Verbose
         
-        # Convert response to JSON
+        # Convert response to JSON>
         [string]$resp = $Result | ConvertTo-Json
 
         #resposed to the request

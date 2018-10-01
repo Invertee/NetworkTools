@@ -36,11 +36,12 @@
     color: white;
     margin-top: 35px;
     border-radius: 5px; 
+    padding: 5px;
 }
 
 .innertext {
     margin: 10px;
-    width: 100%;
+    width: 97.5%;
     display: block;
 }
 
