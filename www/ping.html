@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Powershell Web UI</title>
+    <title>Network Tools</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/images/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />
@@ -34,23 +34,27 @@
                             <label for="common">TCP Ports:</label>
                             <br>
                                 <div class="form-check form-check-inline col-md-1">
-                                    <input class="form-check-input default" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked>
+                                    <input class="form-check-input default" type="radio" name="inlineRadioOptions" onclick="changeValue('None')" id="inlineRadio1" value="none" checked>
                                     <label class="form-check-label" for="inlineRadio1">None</label>
                                 </div>
                                 <div class="form-check form-check-inline col-md-1">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" onclick="changeValue(445)" id="inlineRadio2" value="smb">
                                     <label class="form-check-label" for="inlineRadio2">SMB</label>
                                 </div>
                                 <div class="form-check form-check-inline col-md-1">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" onclick="changeValue(3389)" id="inlineRadio3" value="rdp">
                                     <label class="form-check-label" for="inlineRadio3">RDP</label>
                                 </div>
                                 <div class="form-check form-check-inline col-md-1">
-                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio4" value="option4">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" onclick="changeValue(80)" id="inlineRadio4" value="http">
                                     <label class="form-check-label" for="inlineRadio4">HTTP</label>
                                 </div>
                                 <div class="form-check form-check-inline col-md-1">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="option5">
+                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" onclick="changeValue(443)" id="inlineRadio4" value="http">
+                                    <label class="form-check-label" for="inlineRadio4">HTTPS</label>
+                                </div>
+                                <div class="form-check form-check-inline col-md-1">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio5" value="custom">
                                         <label class="form-check-label" for="inlineRadio5">Custom</label>
                                     </div>
                                 <div class="form-group form-check-inline col-md-2">
@@ -59,10 +63,10 @@
                             </div>
                             <div class="form-group">
                               <label for="resultsarea"></label>
-                              <textarea class="form-control" id="resultsarea" rows="5"></textarea>
+                              <textarea class="form-control" id="resultsarea" rows="7"></textarea>
                             </div>
 
-                            <button type="button" class="btn btn-outline-warning">Warning</button>
+                            <button type="button" onclick="pingHost()" class="btn btn-outline-warning">Submit!</button>
 
                             
                           </form>

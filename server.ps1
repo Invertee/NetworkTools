@@ -65,10 +65,26 @@ while ($http.IsListening) {
         Write-Host $FormContent -f 'Green'
 
         # Run network test and return results
-        $result = Test-NetConnection -ComputerName $FormContent.hostname -Port $FormContent.port -InformationLevel Detailed -Verbose
+        if ($FormContent.port -eq 0) {
+            $TestRes = Test-NetConnection -ComputerName $FormContent.hostname -InformationLevel Detailed
+        } else {
+            $TestRes = Test-NetConnection -ComputerName $FormContent.hostname -Port $FormContent.port -InformationLevel Detailed
+        }
         
+        $result = @{
+            Computername     = $TestRes.ComputerName
+            RemoteAddress    = $TestRes.RemoteAddress.IpAddresstoString
+            RemotePort       = $TestRes.RemotePort
+            InterfaceAlias   = $TestRes.InterfaceAlias
+            SourceAddress    = $TestRes.SourceAddress.IPAddress
+            PingSucceeded    = $TestRes.PingSucceeded
+            TcpTestSucceeded = $TestRes.TcpTestSucceeded
+            RoundTripTime    = $TestRes.PingReplyDetails.RoundtripTime
+            NextHop          = $TestRes.NetRoute.NextHop
+        }
+
         # Convert response to JSON>
-        [string]$resp = $Result | ConvertTo-Json
+        [string]$resp = $Result | ConvertTo-Json 
 
         #resposed to the request
         $buffer = [System.Text.Encoding]::UTF8.GetBytes($resp)
@@ -95,5 +111,6 @@ while ($http.IsListening) {
         $http.Stop()
     }
 
+    
 } 
 
