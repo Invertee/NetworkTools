@@ -52,3 +52,11 @@
 #resultsarea {
     resize: none;
 }
+
+.chart {
+    margin: auto;
+    border: solid 2x #ffffff;
+    padding: 5px;
+    border-spacing: 5px;
+    border-collapse: collapse;
+}
