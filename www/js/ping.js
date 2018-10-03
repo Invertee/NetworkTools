@@ -10,6 +10,9 @@ function pingHost() {
       prt = 0
     }
 
+    document.getElementById('resultsarea').value = ''
+    document.getElementById('resultsarea').style.backgroundImage = "url('/images/loading.gif')"    
+
     fetch('http://localhost:48080/ping', {
   method: 'post',
   headers: {
@@ -20,7 +23,11 @@ function pingHost() {
     hostname: hn,
     port: prt,
 })
-}).then(res => res.json())
+})
+
+
+
+.then(res => res.json())
 
   .then((res) => {
 
@@ -30,7 +37,7 @@ function pingHost() {
       "Remote Address: " + res.RemoteAddress + "\n" +
       "Ping Succeeded: " + res.PingSucceeded + "\n" +
       "Round Trip Time (RTT): " + res.RoundTripTime + "ms \n" +
-      "InterfaceAlias: " + res.InterfaceAlias + "\n" +
+      "Interface Alias: " + res.InterfaceAlias + "\n" +
       "Source Address: " + res.SourceAddress + "\n" +
       "Next Hop: " + res.NextHop + "\n"
 
@@ -40,15 +47,17 @@ function pingHost() {
       "Remote Address: " + res.RemoteAddress + "\n" +
       "Remote Port: " + res.RemotePort + "\n" +
       "TCP Test Succeeded: " + res.TcpTestSucceeded + "\n" +
-      "InterfaceAlias: " + res.InterfaceAlias + "\n" +
+      "Interface Alias: " + res.InterfaceAlias + "\n" +
       "Source Address: " + res.SourceAddress + "\n" +
       "Next Hop: " + res.NextHop + "\n"
 
     }
 
+    document.getElementById('resultsarea').style.backgroundImage = ''   
     document.getElementById('resultsarea').value = results
   });
 }
+
 
 
 function changeValue(port) {
