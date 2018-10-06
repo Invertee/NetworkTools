@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" media="screen" href="/css/style.css" />
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/ipscan.js"></script>
 </head>
 <body>
     <div class="bodycontainer">
@@ -24,7 +24,26 @@
         </div>
 
         <div class="infocontainer">
-           
+            
+            <form>
+                <div class="row">
+                  <div class="col">
+                    <label for="startip">Start IP Address:</label>  
+                    <input type="text" class="form-control" id="startIP" placeholder="192.168.1.0">
+                  </div>
+                  <div class="col">
+                    <label for="startip">End IP Address:</label>  
+                    <input type="text" class="form-control" id="endIP" placeholder="192.168.1.255">
+                  </div>
+                </div>
+              </form>
+
+            <button type="button" id="scansubmit" onclick="ipScan()" class="btn btn-outline-warning">Submit!</button>
+        </div>
+
+        <div id="resultspanel">
+            <div id="loadingpanel"></div>
+            <div id="resultstable"></div>
         </div>
 
     </div>

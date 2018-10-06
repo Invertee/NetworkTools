@@ -3,6 +3,7 @@ New-PSDrive -Name WebStore -PSProvider FileSystem -Root "$PSScriptRoot\www" | ou
 # Load Functions and modules
 . $PSScriptRoot\libs\Invoke-URLInDefaultBrowser.ps1
 . $PSScriptRoot\libs\Set-MIMEType.ps1
+. $PSScriptRoot\libs\IPv4NetworkScan.ps1
 
 # Http Server
 $http = [System.Net.HttpListener]::new() 
@@ -83,6 +84,32 @@ while ($http.IsListening) {
             NextHop          = $TestRes.NetRoute.NextHop
         }
 
+        # Convert response to JSON>
+        [string]$resp = $Result | ConvertTo-Json 
+
+        #resposed to the request
+        $buffer = [System.Text.Encoding]::UTF8.GetBytes($resp)
+        $Context.Response.ContentType = 'application/json'
+        $context.Response.ContentLength64 = $buffer.Length
+        $context.Response.OutputStream.Write($buffer, 0, $buffer.Length)
+        $context.Response.OutputStream.Close() 
+    }
+
+    # ROUTE
+    # IP Scan POST handling
+    if ($context.Request.HttpMethod -eq 'POST' -and $context.Request.RawUrl -eq '/ipscan') {
+
+        # decode the form post
+        # html form members need 'name' attributes as in the example!
+        $FormContent = [System.IO.StreamReader]::new($context.Request.InputStream).ReadToEnd() | ConvertFrom-Json
+
+        # We can log the request to the terminal
+        write-host "$($context.Request.UserHostAddress)  =>  $($context.Request.Url)" -f 'mag'
+        Write-Host $FormContent -f 'Green'
+
+        # Run network test and return results
+        $result = Invoke-IPv4Scan -StartIPv4Address $FormContent.StartIP -EndIPv4Address $FormContent.EndIP -EnableMACResolving -ExtendedInformations
+        
         # Convert response to JSON>
         [string]$resp = $Result | ConvertTo-Json 
 

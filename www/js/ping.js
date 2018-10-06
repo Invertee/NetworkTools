@@ -29,7 +29,7 @@ function pingHost() {
 
 .then(res => res.json())
 
-  .then((res) => {
+.then((res) => {
 
     if (res.RemotePort == 0) {
 
