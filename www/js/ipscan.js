@@ -1,4 +1,5 @@
 function ipScan() {
+    document.getElementById('resultspanel').style.display = 'block'
     document.getElementById('resultstable').innerHTML = ''
     document.getElementById('loadingpanel').innerText = 'Scanning IP range...'
     document.getElementById('scansubmit').style.backgroundImage = "url('/images/loading.gif')"
@@ -45,7 +46,7 @@ function changeValue(port) {
 // Replace with something nicer :)
 function generateTable(json) {
 console.log(json)
-var table = "<table>"
+var table = "<table id='ipTable'>"
 table += "<tr><th>Status:</th><th>IPv4Address:</th><th>Hostname:</th><th>MAC Address:</th><th>Vendor:</th><th>Response Time(ms):</th></tr>";
 //Dynamic content --------------------------------------------------------
 for (var i = 0; i < json.length ;i++)
