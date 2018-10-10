@@ -24,6 +24,7 @@ function Invoke-URLInDefaultBrowser
         [ValidateNotNullOrEmpty()]
         [String] $URL
     )
+
     #Verify Format. Do not want to assume http or https so throw warning.
     if( $URL -notmatch "http://*" -and $URL -notmatch "https://*")
     {

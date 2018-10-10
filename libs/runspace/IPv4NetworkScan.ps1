@@ -125,13 +125,14 @@ Param(
     [Parameter(
         Position=7,
         HelpMessage='Include inactive devices in result')]
-    [Switch]$IncludeInactive
+    [Switch]$IncludeInactive,
+
+    [Parameter()] $OUI
 )
 
 Begin{
-    Write-Verbose -Message "Script started at $(Get-Date)"
     
-    $OUIListPath = "$PSScriptRoot\oui.txt"
+    
 
     function Convert-Subnetmask 
     {
@@ -394,16 +395,17 @@ Process{
         $PropertiesToDisplay += "MAC"
     }
 
+    #Modified to work in runspaces
+    $OUIListPath = $OUI
+
     # Check if it is possible to assign vendor to MAC --> import CSV-File 
     if($EnableMACResolving)
     {
-        if(Test-Path -Path $OUIListPath -PathType Leaf)        
+        if($OUIListPath)        
         {
             $OUIHashTable = @{ }
 
-            Write-Verbose -Message "Read oui.txt and fill hash table..."
-
-            foreach($Line in Get-Content -Path $OUIListPath)
+            foreach($Line in $OUIListPath)
             {
                 if(-not([String]::IsNullOrEmpty($Line)))
                 {
@@ -414,16 +416,9 @@ Process{
                     catch [System.ArgumentException] { } # Catch if mac is already added to hash table
                 }
             }
-
             $AssignVendorToMAC = $true
 
             $PropertiesToDisplay += "Vendor"
-        }
-        else 
-        {
-            $AssignVendorToMAC = $false
-
-            Write-Warning -Message "No OUI-File to assign vendor with MAC-Address found! Execute the script ""Create-OUIListFromWeb.ps1"" to download the latest version. This warning does not affect the scanning procedure."
         }
     }  
     
@@ -490,12 +485,12 @@ Process{
         if(($EnableMACResolving) -and (($Status -eq "Up") -or ($IncludeInactive)))
         {
             $Arp_Result = (arp -a ).ToUpper()
-			           
 			foreach($Line in $Arp_Result)
             {
                 if($Line.TrimStart().StartsWith($IPv4Address))
                 {
-					$MAC = [Regex]::Matches($Line,"([0-9A-F][0-9A-F]-){5}([0-9A-F][0-9A-F])").Value
+                    $MAC = [Regex]::Matches($Line,"([0-9A-F][0-9A-F]-){5}([0-9A-F][0-9A-F])").Value
+
                 }
             }
         }
@@ -640,7 +635,7 @@ Process{
                         # Split it, so we can search the vendor (XX-XX-XX-XX-XX-XX to XXXXXX)
                         $MAC_VendorSearch = $Job_Result.MAC.Replace("-","").Substring(0,6)
                                 
-                        $Vendor = $OUIHashTable.Get_Item($MAC_VendorSearch)
+                        $Vendor = $OUIHashTable.Item($MAC_VendorSearch)
                     }
 
                     [pscustomobject] @{

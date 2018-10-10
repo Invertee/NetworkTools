@@ -1,15 +1,10 @@
 function Set-MIMEType {
 
-    [CmdletBinding()]
-    param
-    (
-        [String] $File
-    )
+    param([String] $File)
 
     $ext = $File.Split('.')[-1]
 
-    Switch ($ext) 
-    {
+    Switch ($ext) {
         html  {$r = 'text/html'}
         jpg   {$r = 'image/jpeg'}
         jpeg  {$r = 'image/jpeg'}
