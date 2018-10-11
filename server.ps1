@@ -1,7 +1,7 @@
 ﻿$Root                 = [Hashtable]::Synchronized(@{})
 $Root.ScriptDirectory = "$PSScriptRoot\libs"
 $Root.Handlers        = "$PSScriptRoot\libs\handlers"  
-$Root.RunspaceFn      = "$PSScriptRoot\libs\Runspace"
+$Root.RunspaceFn      = "$PSScriptRoot\libs\runspace"
 $Root.WWWRoot         = "$PSScriptRoot\www" 
 
 Get-ChildItem ("$($Root.ScriptDirectory)\*.ps1") | 

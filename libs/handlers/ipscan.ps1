@@ -10,7 +10,7 @@
                 #Write-Host $FormContent -f 'Green'
 
                 # Run network test and return results
-                $result = Invoke-IPv4Scan -StartIPv4Address $FormContent.StartIP -EndIPv4Address $FormContent.EndIP -EnableMACResolving -ExtendedInformations -OUI $OUIListPath 
+                $result = Invoke-IPv4Scan -StartIPv4Address $FormContent.StartIP -EndIPv4Address $FormContent.EndIP -EnableMACResolving -ExtendedInformations -OUI $Root.OUIlist 
                 
                 # Convert response to JSON>
                 [string]$resp = $Result | ConvertTo-Json 

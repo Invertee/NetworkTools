@@ -29,7 +29,7 @@
         }
 
         # Import OUI for IPScanning
-        $OUIlist = Get-Content "$($Root.RunspaceFn)\oui.txt" 
+        $Root.OUIlist = Get-Content "$($Root.RunspaceFn)\oui.txt" 
 
         # Opens the index page in the default browser
         Invoke-URLInDefaultBrowser -URL "http://localhost:48080/index.html"
@@ -56,7 +56,7 @@
 
         #region RequestProcessing 
         $RequestCallback = {
-            Param ( $ThreadID, $Root, $OUIListPath)
+            Param ( $ThreadID, $Root)
 
             $MIME           = ''
             $Command        = ''
@@ -122,7 +122,6 @@
                 ConsoleOutput = $ConsoleOutput
             }
         }
-        #endregion
     }
 
     Process
@@ -136,9 +135,8 @@
 
             # Params to pass to runspaces
             $Params =   @{ 
-                ThreadID    = $i
-                Root    = $Root
-                OUIListPath = $OUIlist
+                ThreadID = $i
+                Root     = $Root
             }
         
             [void]$Pipeline.AddParameters($Params)
@@ -187,7 +185,7 @@
                     if ($_.Job.IsCompleted)
 				    {
                         $AwaitingRequest = $False
-                        $JobIndex = $Jobs.IndexOf($_)
+                        $JobIndex        = $Jobs.IndexOf($_)
        
                         break
 				    }
@@ -218,8 +216,7 @@
  
             $Params =   @{ 
                 ThreadID  = $JobIndex 
-                Root  = $Root
-                OUIListPath = $OUIlist
+                Root      = $Root
             }
  
             [void]$Pipeline.AddParameters($Params)
