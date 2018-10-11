@@ -32,7 +32,7 @@
         $OUIlist = Get-Content "$($Root.RunspaceFn)\oui.txt" 
 
         # Opens the index page in the default browser
-        #Invoke-URLInDefaultBrowser -URL "http://localhost:48080/index.html"
+        Invoke-URLInDefaultBrowser -URL "http://localhost:48080/index.html"
 
         # Load Routes   
         $handlers = Get-ChildItem $root.Handlers     
@@ -89,7 +89,6 @@
             
             if ($HandlerBlockRes)
             {
-                Write-Host $HandlerBlockRes
                 $StatusCode    = $HandlerBlockRes.StatusCode
                 $ResponseData  = $HandlerBlockRes.ResponseData
                 $MIME          = $HandlerBlockRes.MIME
