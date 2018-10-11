@@ -1,5 +1,6 @@
 ﻿$Root                 = [Hashtable]::Synchronized(@{})
-$Root.ScriptDirectory = "$PSScriptRoot\libs" 
+$Root.ScriptDirectory = "$PSScriptRoot\libs"
+$Root.Handlers        = "$PSScriptRoot\libs\handlers"  
 $Root.RunspaceFn      = "$PSScriptRoot\libs\Runspace"
 $Root.WWWRoot         = "$PSScriptRoot\www" 
 

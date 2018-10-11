@@ -32,7 +32,15 @@
         $OUIlist = Get-Content "$($Root.RunspaceFn)\oui.txt" 
 
         # Opens the index page in the default browser
-        Invoke-URLInDefaultBrowser -URL "http://localhost:48080/index.html"
+        #Invoke-URLInDefaultBrowser -URL "http://localhost:48080/index.html"
+
+        # Load Routes   
+        $handlers = Get-ChildItem $root.Handlers     
+        Foreach ($handler in $handlers)
+        {
+            $handlerstr += Get-Content $handler.FullName -Raw
+        }
+        $Root.HandlerBlock = [System.Management.Automation.ScriptBlock]::Create($handlerstr)
 
         $Pool = [RunspaceFactory]::CreateRunspacePool(1, $MaxThreads, $SessionState, $Host)
         $Pool.ApartmentState  = 'STA'
@@ -47,7 +55,7 @@
         $Jobs = New-Object Collections.Generic.List[PSCustomObject]
 
         #region RequestProcessing 
-        $RequestCallback = { 
+        $RequestCallback = {
             Param ( $ThreadID, $Root, $OUIListPath)
 
             $MIME           = ''
@@ -76,69 +84,19 @@
                 $HadError      = $false
             }
 
-            if ($Request.HttpMethod -eq 'POST' -and $Request.RawUrl -eq '/ping') 
-            {
-                # decode the form post
-                $FormContent = [System.IO.StreamReader]::new($Request.InputStream).ReadToEnd() | ConvertFrom-Json
-        
-                # We can log the request to the terminal
-                write-host "$($context.Request.UserHostAddress)  =>  $($context.Request.Url)" -f 'mag'
-                #Write-Host $FormContent -f 'Green'
-        
-                # Run network test and return results
-                if ($FormContent.port -eq 0) {
-                    $TestRes = Test-NetConnection -ComputerName $FormContent.hostname -InformationLevel Detailed
-                } else {
-                    $TestRes = Test-NetConnection -ComputerName $FormContent.hostname -Port $FormContent.port -InformationLevel Detailed
-                }
-                
-                $result = @{
-                    Computername     = $TestRes.ComputerName
-                    RemoteAddress    = $TestRes.RemoteAddress.IpAddresstoString
-                    RemotePort       = $TestRes.RemotePort
-                    InterfaceAlias   = $TestRes.InterfaceAlias
-                    SourceAddress    = $TestRes.SourceAddress.IPAddress
-                    PingSucceeded    = $TestRes.PingSucceeded
-                    TcpTestSucceeded = $TestRes.TcpTestSucceeded
-                    RoundTripTime    = $TestRes.PingReplyDetails.RoundtripTime
-                    NextHop          = $TestRes.NetRoute.NextHop
-                }
-        
-                # Convert response to JSON>
-                [string]$resp = $Result | ConvertTo-Json 
-
-                $StatusCode    = 200
-                $ResponseData  = [System.Text.Encoding]::UTF8.GetBytes($resp)
-                $MIME        = 'application/json'
-                $ConsoleOutput = "$($Request.UserHostAddress)  =>  $($Url)"
-                $HadError      = $false
-            }
-
-            # ROUTE
-            # IP Scan POST handling
-            if ($Request.HttpMethod -eq 'POST' -and $Request.RawUrl -eq '/ipscan') {
-
-                # decode the form post
-                $FormContent = [System.IO.StreamReader]::new($Request.InputStream).ReadToEnd() | ConvertFrom-Json
-
-                # We can log the request to the terminal
-                write-host "$($Request.UserHostAddress)  =>  $($Request.Url)" -f 'mag'
-                #Write-Host $FormContent -f 'Green'
-
-                # Run network test and return results
-                $result = Invoke-IPv4Scan -StartIPv4Address $FormContent.StartIP -EndIPv4Address $FormContent.EndIP -EnableMACResolving -ExtendedInformations -OUI $OUIListPath 
-                
-                # Convert response to JSON>
-                [string]$resp = $Result | ConvertTo-Json 
-
-                $StatusCode    = 200
-                $ResponseData  = [System.Text.Encoding]::UTF8.GetBytes($resp)
-                $MIME          = 'application/json'
-                $ConsoleOutput = "$($Request.UserHostAddress)  =>  $($Url)"
-                $HadError      = $false
-            }
+            # Run through routes in handlerblock
+            $HandlerBlockRes = $Root.HandlerBlock.Invoke()
             
-            # Route
+            if ($HandlerBlockRes)
+            {
+                Write-Host $HandlerBlockRes
+                $StatusCode    = $HandlerBlockRes.StatusCode
+                $ResponseData  = $HandlerBlockRes.ResponseData
+                $MIME          = $HandlerBlockRes.MIME
+                $ConsoleOutput = $HandlerBlockRes.ConsoleOutput
+                $HadError      = $HandlerBlockRes.HadError
+            }
+
             # Handle requests when no files are found.
             if (!$ResponseData) 
             { 
@@ -148,9 +106,7 @@
                 $ConsoleOutput = "$($Request.UserHostAddress)  =>  $($Url)"
                 $HadError      = $false
             }
-
-            # Routes End # 
-            
+   
             $Response.ContentType = $MIME
             $Response.OutputStream.Write($ResponseData, 0, $ResponseData.Length)
             $Response.Close()
