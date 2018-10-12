@@ -9,9 +9,11 @@ function pingHost() {
     if (prt == 'None') {
       prt = 0
     }
-
+    document.getElementById('resultspanel').style.display = 'block'
     document.getElementById('resultsarea').value = ''
-    document.getElementById('resultsarea').style.backgroundImage = "url('/images/loading.gif')"    
+    document.getElementById('loadingpanel').innerText = 'Pinging Host...'
+    document.getElementById('scansubmit').style.backgroundImage = "url('/images/loading.gif')"
+    document.getElementById('scansubmit').innerText = '' 
 
     fetch('http://localhost:48080/ping', {
   method: 'post',
@@ -52,7 +54,9 @@ function pingHost() {
       "Next Hop: " + res.NextHop + "\n"
 
     }
-
+    document.getElementById('scansubmit').style.backgroundImage = ""
+    document.getElementById('scansubmit').innerText = 'Submit!' 
+    document.getElementById('loadingpanel').innerText = ''
     document.getElementById('resultsarea').style.backgroundImage = ''   
     document.getElementById('resultsarea').value = results
   });

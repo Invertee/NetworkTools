@@ -24,7 +24,6 @@ function ipScan() {
     var table = generateTable(res)
 
     document.getElementById('resultstable').innerHTML = table;
-
     document.getElementById('loadingpanel').innerText = ''
     document.getElementById('scansubmit').style.backgroundImage = ""
     document.getElementById('scansubmit').innerText = 'Submit!' 

@@ -62,18 +62,26 @@
                                     <input type="text" class="form-control" id="PortNo" value="None">
                                 </div>
                             </div>
-                            <div class="form-group">
-                              <label for="resultsarea"></label>
-                              <textarea class="form-control" id="resultsarea" rows="8"></textarea>
-                            </div>
 
-                            <button type="button" onclick="pingHost()" class="btn btn-outline-warning">Submit!</button>
+                            <button type="button" id="scansubmit" onclick="pingHost()" class="btn btn-outline-warning">Submit!</button>
+
 
                             
                           </form>
             </div>
         </div>
 
+        <div id="resultspanel">
+            <div id="loadingpanel"></div>
+            <div id="resultstable">
+                <div class="form-group">
+                    <label for="resultsarea"></label>
+                    <textarea class="form-control" id="resultsarea" rows="8"></textarea>
+                  </div>
+            </div>
+        </div>
+        
     </div>
+    
 </body>
 </html>
